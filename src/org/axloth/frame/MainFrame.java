@@ -1,10 +1,14 @@
 package org.axloth.frame;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainFrame
 {
@@ -103,13 +107,13 @@ public class MainFrame
                                 Runtime.getRuntime().exec("calc");
                             }catch(Exception exception)
                             {
-                                System.err.println("打开计算机失败！"+exception.getMessage());
+                                System.err.println("打开计算器失败！"+exception.getMessage());
                             }
                             break;
                         case "打开WORD":
                             try
                             {
-                                Runtime.getRuntime().exec("cmd /c start winword");
+                                Runtime.getRuntime().exec("cmd start winword");
                             }catch(Exception exception)
                             {
                                 System.err.println("打开WORD失败！"+exception.getMessage());
@@ -118,7 +122,7 @@ public class MainFrame
                         case "打开EXCEL":
                             try
                             {
-                                Runtime.getRuntime().exec("cmd /c start excel");
+                                Runtime.getRuntime().exec("cmd start excel");
                             }catch(Exception exception)
                             {
                                 System.err.println("打开EXCEL失败！"+exception.getMessage());
@@ -131,6 +135,168 @@ public class MainFrame
                 }
             }
         });
-        leftPanel.add(jTree);
+        final JPanel leftPanel=new JPanel(); //创建导航栏面板
+
+        final JPanel rightPanel=new JPanel(); //创建内容面板
+
+        final JPanel topPanel=new JPanel();
+
+        leftPanel.add(jTree); //将树添加到面板组件中
+
+        final JPanel buttonPanel=new JPanel(); //创建工具栏面板
+        final GridLayout gridLayout=new GridLayout(1,0); //创建水平箱式管理器布局
+        gridLayout.setVgap(6); //设置箱的垂直间隔为6像素
+        gridLayout.setHgap(6);
+        buttonPanel.setLayout(gridLayout); //设置工具箱面板采用的布局管理器为箱式布局
+        buttonPanel.setBackground(Color.WHITE); //设置工具栏面板的背景色
+        //设置工具栏面板采用的边框样式
+        buttonPanel.setBorder(new TitledBorder(null,"",TitledBorder.DEFAULT_JUSTIFICATION,TitledBorder.DEFAULT_POSITION,null,null));
+        topPanel.add(buttonPanel,BorderLayout.CENTER); //将工具栏面板添加到上级面板中
+
+        final JButton recordShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        recordShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                rightPanel.add(new RecordSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+            }
+        });
+        recordShortKeyButton.setText("档案管理");
+        buttonPanel.add(recordShortKeyButton);
+
+        final JButton attendanceShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        attendanceShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                rightPanel.add(new AttendanceSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+            }
+        });
+        attendanceShortKeyButton.setText("考勤管理");
+        buttonPanel.add(attendanceShortKeyButton);
+
+        final JButton rewardPunishmentShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        rewardPunishmentShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                rightPanel.add(new RewardPunishmentSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+            }
+        });
+        rewardPunishmentShortKeyButton.setText("奖惩管理");
+        buttonPanel.add(rewardPunishmentShortKeyButton);
+
+        final JButton statsReportShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        statsReportShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                rightPanel.add(new StatsReportSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+            }
+        });
+        statsReportShortKeyButton.setText("统计报表");
+        buttonPanel.add(statsReportShortKeyButton);
+
+        final JButton basicInfoShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        basicInfoShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                rightPanel.add(new BasicInfoSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+            }
+        });
+        basicInfoShortKeyButton.setText("基本资料");
+        buttonPanel.add(basicInfoShortKeyButton);
+
+        final JButton updatePwdShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        if(record==null)
+        {
+            updatePwdShortKeyButton.setEnabled(false);
+        }
+        updatePwdShortKeyButton.addActionListener(new ActionListener()
+        { //为按钮创建事件监听器，用来捕获按钮被点击事件
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                rightPanel.removeAll(); //移除内容面板所有内容
+                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+                UpdatePwdDialog dialog=new UpdatePwdDialog(); //创建用来修改密码的对话框
+                dialog.setRecord(record); //将当前管理员的档案对象传入对话框
+                dialog.setVisible(true); //设置对话框可见，即显示对话框
+            }
+        });
+        updatePwdShortKeyButton.setText("修改密码");
+        buttonPanel.add(updatePwdShortKeyButton);
+
+        final JButton calculatorShortcutKeyButton=new JButton();
+        calculatorShortcutKeyButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                try
+                {
+                    Runtime.getRuntime().exec("calc");
+                }catch(Exception exception)
+                {
+                    System.err.println("打开计算器失败！"+exception.getMessage());
+                }
+            }
+        });
+        calculatorShortcutKeyButton.setText("打开计算器");
+        buttonPanel.add(calculatorShortcutKeyButton);
+
+        final JButton excelShortcutKeyButton=new JButton();
+        excelShortcutKeyButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                try
+                {
+                    Runtime.getRuntime().exec("cmd start excel");
+                }catch(Exception exception)
+                {
+                    System.err.println("打开EXCEL失败！"+exception.getMessage());
+                }
+            }
+        });
+        excelShortcutKeyButton.setText("打开EXCEL");
+        buttonPanel.add(excelShortcutKeyButton);
+
+        final JButton wordShortcutKeyButton=new JButton();
+        wordShortcutKeyButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                try
+                {
+                    Runtime.getRuntime().exec("cmd start winword");
+                }catch(Exception exception)
+                {
+                    System.err.println("打开WORD失败！"+exception.getMessage());
+                }
+            }
+        });
+        wordShortcutKeyButton.setText("打开WORD");
+        buttonPanel.add(wordShortcutKeyButton);
+
+        final JButton exitShortcutKeyButton=new JButton();
+        exitShortcutKeyButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                System.exit(0); //退出系统
+            }
+        });
+        exitShortcutKeyButton.setText("退出");
+        buttonPanel.add(exitShortcutKeyButton);
     }
 }
