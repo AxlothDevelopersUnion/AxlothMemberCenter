@@ -1,7 +1,10 @@
 package org.axloth.frame;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.*;
+import java.awt.*;
 
 public class MainFrame
 {
@@ -43,6 +46,32 @@ public class MainFrame
         toolNode.add(new DefaultMutableTreeNode("打开WORD"));
         toolNode.add(new DefaultMutableTreeNode("打开EXCEL"));
         root.add(toolNode);
-        DefaultTreeModel treeModel=new DefaultTreeModel(root);
+        DefaultTreeModel treeModel=new DefaultTreeModel(root); //通过树结点对象创建树模型对象
+
+        JTree jTree=new JTree(treeModel); //通过树模型对象创建树对象
+        jTree.setBackground(Color.WHITE); //设置树的背景色
+        jTree.setRootVisible(false); //设置不显示树的根结点
+        jTree.setRowHeight(28); //设置各结点的高度为28像素
+        Font font=new Font("黑体",Font.BOLD,16);
+        jTree.setFont(font); //设置结点的字体样式
+        DefaultTreeCellRenderer renderer=new DefaultTreeCellRenderer(); //创建一个树的绘制对象
+        renderer.setClosedIcon(null); //设置结点折叠时不采用图标
+        renderer.setOpenIcon(null); //设置结点展开时不采用图标
+        jTree.setCellRenderer(renderer); //将树的绘制对象设置到树中
+        int count=root.getChildCount(); //获得一级结点的数量
+        for(int i=0;i<count;++i)
+        {
+            DefaultMutableTreeNode tNode=(DefaultMutableTreeNode)root.getChildAt(i); //获得指定索引的一级结点对象
+            TreePath tPath=new TreePath(tNode.getPath()); //获得结点对象的路径
+            jTree.expandPath(tPath); //展开该结点
+        }
+        jTree.addTreeSelectionListener(new TreeSelectionListener()
+        { //捕获树的选取事件
+            public void valueChanged(TreeSelectionEvent e)
+            {
+
+            }
+        });
+        leftPanel.add(jTree);
     }
 }
