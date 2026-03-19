@@ -68,8 +68,67 @@ public class MainFrame
         jTree.addTreeSelectionListener(new TreeSelectionListener()
         { //捕获树的选取事件
             public void valueChanged(TreeSelectionEvent e)
-            {
-
+            { //获取当前触发事件的JTree对象并获取最后被选中的结点
+                DefaultMutableTreeNode selectedNode=(DefaultMutableTreeNode)jTree.getLastSelectedPathComponent();
+                if(selectedNode==null)
+                { //防空指针：若点击空白处或取消选中，可能为空
+                    return;
+                }
+                if(selectedNode.isLeaf())
+                { //拦截：只响应叶子结点(没有子结点的底层菜单)的点击
+                    String nodeName=selectedNode.getUserObject().toString(); //获取结点上绑定的对象
+                    switch(nodeName)
+                    {
+                        case "档案管理":
+                            System.out.println("正在加载[档案管理]面板……");
+                            break;
+                        case "考勤管理":
+                            System.out.println("正在加载[考勤管理]面板……");
+                            break;
+                        case "奖惩管理":
+                            System.out.println("正在加载[奖惩管理]面板……");
+                            break;
+                        case "培训管理":
+                            System.out.println("正在加载[培训管理]面板……");
+                            break;
+                        case "新增用户":
+                            System.out.println("正在加载[新增用户]面板……");
+                            break;
+                        case "修改密码":
+                            System.out.println("正在加载[修改密码]面板……");
+                            break;
+                        case "打开计算器":
+                            try
+                            {
+                                Runtime.getRuntime().exec("calc");
+                            }catch(Exception exception)
+                            {
+                                System.err.println("打开计算机失败！"+exception.getMessage());
+                            }
+                            break;
+                        case "打开WORD":
+                            try
+                            {
+                                Runtime.getRuntime().exec("cmd /c start winword");
+                            }catch(Exception exception)
+                            {
+                                System.err.println("打开WORD失败！"+exception.getMessage());
+                            }
+                            break;
+                        case "打开EXCEL":
+                            try
+                            {
+                                Runtime.getRuntime().exec("cmd /c start excel");
+                            }catch(Exception exception)
+                            {
+                                System.err.println("打开EXCEL失败！"+exception.getMessage());
+                            }
+                            break;
+                        default:
+                            System.err.println("选中了一个不存在的模块！");
+                            break;
+                    }
+                }
             }
         });
         leftPanel.add(jTree);
