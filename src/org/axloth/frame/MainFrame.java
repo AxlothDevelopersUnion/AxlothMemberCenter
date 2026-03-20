@@ -11,8 +11,19 @@ import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame
 {
-    public static void main(String[] args)
+
+    public MainFrame()
     {
+        setTitle("主窗体");
+        Container c=getContentPane(); //获取主容器
+        setLayout(new BorderLayout());
+        setSize(1200,800);
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        JPanel leftPanel=new JPanel(); //创建导航栏面板
+        JPanel rightPanel=new JPanel(); //创建内容面板
+        JPanel topPanel=new JPanel();
+
         DefaultMutableTreeNode root=new DefaultMutableTreeNode("root"); //创建树的结点
         DefaultMutableTreeNode personnelNode=new DefaultMutableTreeNode("人事管理"); //创建树的一级子结点
         personnelNode.add(new DefaultMutableTreeNode("档案管理")); //创建树的叶子结点并添加到一级子结点
@@ -89,6 +100,9 @@ public class MainFrame extends JFrame
                     {
                         case "档案管理":
                             System.out.println("正在加载[档案管理]面板……");
+                            rightPanel.removeAll(); //移除内容面板所有内容
+                            rightPanel.add(new BasicInfoPanel(),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                            SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
                             break;
                         case "考勤管理":
                             System.out.println("正在加载[考勤管理]面板……");
@@ -157,13 +171,6 @@ public class MainFrame extends JFrame
                 }
             }
         });
-
-        final JPanel leftPanel=new JPanel(); //创建导航栏面板
-
-        final JPanel rightPanel=new JPanel(); //创建内容面板
-
-        final JPanel topPanel=new JPanel();
-
         leftPanel.add(jTree); //将树添加到面板组件中
 
         final JPanel buttonPanel=new JPanel(); //创建工具栏面板
@@ -183,7 +190,7 @@ public class MainFrame extends JFrame
             {
                 System.out.println("正在加载[档案管理]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new RecordPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new BasicInfoPanel(),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -239,7 +246,7 @@ public class MainFrame extends JFrame
             {
                 System.out.println("正在加载[基本资料]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new BasicInfoPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new BasicInfoPanel(),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -331,21 +338,14 @@ public class MainFrame extends JFrame
         exitShortcutKeyButton.setText("退出");
         buttonPanel.add(exitShortcutKeyButton);
 
-        MainFrame mainFrame=new MainFrame();
-        mainFrame.add(topPanel,BorderLayout.NORTH);
-        mainFrame.add(leftPanel,BorderLayout.WEST);
-        mainFrame.add(rightPanel,BorderLayout.EAST);
-
-
+        add(topPanel,BorderLayout.NORTH);
+        add(leftPanel,BorderLayout.WEST);
+        add(rightPanel,BorderLayout.EAST);
     }
 
-    public MainFrame()
+    public static void main(String[] args)
     {
-        setTitle("主窗体");
-        Container c=getContentPane(); //获取主容器
-        setLayout(new BorderLayout());
-        setSize(1200,800);
-        setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        MainFrame mainFrame=new MainFrame();
     }
+
 }
