@@ -8,9 +8,8 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
-public class MainFrame
+public class MainFrame extends JFrame
 {
     public static void main(String[] args)
     {
@@ -32,18 +31,22 @@ public class MainFrame
         systemNode.add(new DefaultMutableTreeNode("初始化系统"));
         root.add(systemNode);
         DefaultMutableTreeNode userNode=new DefaultMutableTreeNode("用户管理");
+        /*
         if(record==null)
         { //当record为null时，说明是通过默认用户登入的，此时只能新增用户，不能修改密码
             userNode.add(new DefaultMutableTreeNode("新增用户"));
         }else
         {
-            String purview=record.getTbManager().getPurview();
+            String purview=record.getTbMana0ger().getPurview();
             if(purview.equals("管理员"))
             { //只有当管理员的权限为“管理员”时，才有权修改密码
                 userNode.add(new DefaultMutableTreeNode("新增用户"));
                 userNode.add(new DefaultMutableTreeNode("修改密码"));
             }
         }
+         */
+        userNode.add(new DefaultMutableTreeNode("新增用户"));
+        userNode.add(new DefaultMutableTreeNode("修改密码"));
         root.add(userNode);
         DefaultMutableTreeNode toolNode=new DefaultMutableTreeNode("系统工具");
         toolNode.add(new DefaultMutableTreeNode("打开计算器"));
@@ -135,6 +138,7 @@ public class MainFrame
                 }
             }
         });
+
         final JPanel leftPanel=new JPanel(); //创建导航栏面板
 
         final JPanel rightPanel=new JPanel(); //创建内容面板
@@ -159,7 +163,7 @@ public class MainFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new RecordSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new RecordPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -172,7 +176,7 @@ public class MainFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new AttendanceSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new AttendancePanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -185,7 +189,7 @@ public class MainFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new RewardPunishmentSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new RewardPunishmentPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -198,7 +202,7 @@ public class MainFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new StatsReportSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new StatsReportPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -211,7 +215,7 @@ public class MainFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new BasicInfoSelectedPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
+                rightPanel.add(new BasicInfoPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
             }
         });
@@ -219,10 +223,13 @@ public class MainFrame
         buttonPanel.add(basicInfoShortKeyButton);
 
         final JButton updatePwdShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        /*
         if(record==null)
         {
             updatePwdShortKeyButton.setEnabled(false);
         }
+
+         */
         updatePwdShortKeyButton.addActionListener(new ActionListener()
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
@@ -230,7 +237,7 @@ public class MainFrame
                 rightPanel.removeAll(); //移除内容面板所有内容
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
                 UpdatePwdDialog dialog=new UpdatePwdDialog(); //创建用来修改密码的对话框
-                dialog.setRecord(record); //将当前管理员的档案对象传入对话框
+                // dialog.setRecord(record); //将当前管理员的档案对象传入对话框
                 dialog.setVisible(true); //设置对话框可见，即显示对话框
             }
         });
@@ -298,5 +305,23 @@ public class MainFrame
         });
         exitShortcutKeyButton.setText("退出");
         buttonPanel.add(exitShortcutKeyButton);
+
+        MainFrame mainFrame=new MainFrame();
+        mainFrame.add(topPanel,BorderLayout.NORTH);
+        mainFrame.add(buttonPanel,BorderLayout.SOUTH);
+        mainFrame.add(leftPanel,BorderLayout.WEST);
+        mainFrame.add(rightPanel,BorderLayout.EAST);
+
+
+    }
+
+    public MainFrame()
+    {
+        setTitle("主窗体");
+        Container c=getContentPane(); //获取主容器
+        setLayout(new BorderLayout());
+        setSize(1000,800);
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }
