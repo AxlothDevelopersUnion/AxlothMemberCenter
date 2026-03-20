@@ -17,12 +17,20 @@ public class MainFrame extends JFrame
         setTitle("主窗体");
         Container c=getContentPane(); //获取主容器
         setLayout(new BorderLayout());
-        setSize(1200,800);
+        setSize(1600,900);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JPanel leftPanel=new JPanel(); //创建导航栏面板
-        JPanel rightPanel=new JPanel(); //创建内容面板
-        JPanel topPanel=new JPanel();
+
+        JPanel leftPanel=new JPanel(new FlowLayout()); //创建导航栏面板
+        leftPanel.setBounds(0,50,150,850);
+        JPanel rightPanel=new JPanel(new BorderLayout()); //创建内容面板
+        rightPanel.setBounds(150,50,1450,850);
+        JPanel topPanel=new JPanel(new FlowLayout());
+        topPanel.setBounds(150,0,1450,80);
+
+        add(leftPanel,BorderLayout.WEST);
+        add(rightPanel,BorderLayout.CENTER);
+        add(topPanel,BorderLayout.NORTH);
 
         DefaultMutableTreeNode root=new DefaultMutableTreeNode("root"); //创建树的结点
         DefaultMutableTreeNode personnelNode=new DefaultMutableTreeNode("人事管理"); //创建树的一级子结点
@@ -101,8 +109,9 @@ public class MainFrame extends JFrame
                         case "档案管理":
                             System.out.println("正在加载[档案管理]面板……");
                             rightPanel.removeAll(); //移除内容面板所有内容
-                            rightPanel.add(new BasicInfoPanel(),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
-                            SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+                            rightPanel.add(new BasicInfoPanel()); //将档案管理面板添加到内容面板中
+                            rightPanel.revalidate();
+                            rightPanel.repaint();
                             break;
                         case "考勤管理":
                             System.out.println("正在加载[考勤管理]面板……");
@@ -190,8 +199,9 @@ public class MainFrame extends JFrame
             {
                 System.out.println("正在加载[档案管理]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
-                rightPanel.add(new BasicInfoPanel(),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
-                SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
+                rightPanel.add(new BasicInfoPanel()); //将档案管理面板添加到内容面板中
+                rightPanel.revalidate();
+                rightPanel.repaint();
             }
         });
         recordShortKeyButton.setText("档案管理");
@@ -338,9 +348,8 @@ public class MainFrame extends JFrame
         exitShortcutKeyButton.setText("退出");
         buttonPanel.add(exitShortcutKeyButton);
 
-        add(topPanel,BorderLayout.NORTH);
-        add(leftPanel,BorderLayout.WEST);
-        add(rightPanel,BorderLayout.EAST);
+        revalidate();
+        repaint();
     }
 
     public static void main(String[] args)

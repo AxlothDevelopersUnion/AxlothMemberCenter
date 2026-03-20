@@ -23,6 +23,7 @@ public class BasicInfoPanel extends JPanel
     public BasicInfoPanel()
     {
         setLayout(new BorderLayout());
+        setBounds(0,0,1450,850);
 
         //顶部按钮区
         JPanel topPanel=new JPanel();
@@ -32,7 +33,7 @@ public class BasicInfoPanel extends JPanel
         modifyArchiveBtn=new JButton("修改成员档案");
         topPanel.add(newArchiveBtn);
         topPanel.add(modifyArchiveBtn);
-
+        topPanel.setBounds(0,0,1450,50);
         add(topPanel,BorderLayout.NORTH);
 
         //左侧部门树
@@ -41,9 +42,9 @@ public class BasicInfoPanel extends JPanel
         root.add(new DefaultMutableTreeNode("销售部"));
 
         DefaultMutableTreeNode devNode=new DefaultMutableTreeNode("开发部");
-        root.add(new DefaultMutableTreeNode("软件开发部"));
-        root.add(new DefaultMutableTreeNode("软件测试部"));
-        root.add(new DefaultMutableTreeNode("软件设计部"));
+        devNode.add(new DefaultMutableTreeNode("软件开发部"));
+        devNode.add(new DefaultMutableTreeNode("软件测试部"));
+        devNode.add(new DefaultMutableTreeNode("软件设计部"));
         root.add(devNode);
 
         root.add(new DefaultMutableTreeNode("人事部"));
@@ -55,7 +56,7 @@ public class BasicInfoPanel extends JPanel
         treeScrollPane.setPreferredSize(new Dimension(100,0)); //设置左侧首选宽度
 
         //右侧成员数据表
-        String[] columnNames={"axlothUID","电子邮件","电话号码","地址","邮政编码","毕业院校","毕业时间","专业","计算机能力","加入联盟的日期时间","喜好","优势","劣势","博客链接","上次登入日期时间"};
+        String[] columnNames={"axlothUID","电子邮件","电话号码","地址","邮政编码","毕业院校","毕业时间","专业","计算机能力","加入Axloth的日期时间","喜好","优势","劣势","博客链接","上次登入日期时间"};
         Object[][] data={{}};
 
         DefaultTableModel tableModel=new DefaultTableModel(data,columnNames)
@@ -70,13 +71,17 @@ public class BasicInfoPanel extends JPanel
         memberTable=new JTable(tableModel);
         memberTable.getTableHeader().setFont(new Font("黑体",Font.PLAIN,14));
         memberTable.setRowHeight(25);
+        memberTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        memberTable.getColumnModel().getColumn(9).setPreferredWidth(150); //“加入Axloth的日期时间”的列宽
+        memberTable.getColumnModel().getColumn(14).setPreferredWidth(150); //“上次登入日期时间”的列宽
 
         JScrollPane tableScrollPane=new JScrollPane(memberTable);
-        
+
         //组装分割面板
         JSplitPane splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,treeScrollPane,tableScrollPane); //用水平分割面板将树和表格组合
         splitPane.setDividerLocation(150); //设置分割线初始位置
         splitPane.setContinuousLayout(true); //拖动时连续重绘
+        splitPane.setBounds(0,50,1450,800);
         add(splitPane,BorderLayout.CENTER); //将分割面板添加到中央
 
         newArchiveBtn.addActionListener(new ActionListener()
@@ -101,5 +106,8 @@ public class BasicInfoPanel extends JPanel
                 System.out.println("触发[切换左侧树]选择事件");
             }
         });
+
+        revalidate();
+        repaint();
     }
 }
