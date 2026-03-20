@@ -53,6 +53,7 @@ public class MainFrame extends JFrame
         toolNode.add(new DefaultMutableTreeNode("打开WORD"));
         toolNode.add(new DefaultMutableTreeNode("打开EXCEL"));
         root.add(toolNode);
+
         DefaultTreeModel treeModel=new DefaultTreeModel(root); //通过树结点对象创建树模型对象
 
         JTree jTree=new JTree(treeModel); //通过树模型对象创建树对象
@@ -98,11 +99,29 @@ public class MainFrame extends JFrame
                         case "培训管理":
                             System.out.println("正在加载[培训管理]面板……");
                             break;
+                        case "账套管理":
+                            System.out.println("正在加载[账套管理]面板……");
+                            break;
+                        case "人员设置":
+                            System.out.println("正在加载[人员设置]面板……");
+                            break;
+                        case "统计报表":
+                            System.out.println("正在加载[统计报表]面板……");
+                            break;
+                        case "企业架构":
+                            System.out.println("正在加载[企业架构]面板……");
+                            break;
+                        case "基本资料":
+                            System.out.println("正在加载[基本资料]面板……");
+                            break;
+                        case "初始化系统":
+                            System.out.println("正在加载[初始化系统]面板……");
+                            break;
                         case "新增用户":
                             System.out.println("正在加载[新增用户]面板……");
                             break;
                         case "修改密码":
-                            System.out.println("正在加载[修改密码]面板……");
+                            System.out.println("正在加载[修改密码]对话窗口……");
                             break;
                         case "打开计算器":
                             try
@@ -116,7 +135,7 @@ public class MainFrame extends JFrame
                         case "打开WORD":
                             try
                             {
-                                Runtime.getRuntime().exec("cmd start winword");
+                                Runtime.getRuntime().exec("cmd /c start winword");
                             }catch(Exception exception)
                             {
                                 System.err.println("打开WORD失败！"+exception.getMessage());
@@ -125,7 +144,7 @@ public class MainFrame extends JFrame
                         case "打开EXCEL":
                             try
                             {
-                                Runtime.getRuntime().exec("cmd start excel");
+                                Runtime.getRuntime().exec("cmd /c start excel");
                             }catch(Exception exception)
                             {
                                 System.err.println("打开EXCEL失败！"+exception.getMessage());
@@ -162,6 +181,7 @@ public class MainFrame extends JFrame
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[档案管理]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 rightPanel.add(new RecordPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
@@ -170,11 +190,12 @@ public class MainFrame extends JFrame
         recordShortKeyButton.setText("档案管理");
         buttonPanel.add(recordShortKeyButton);
 
-        final JButton attendanceShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        final JButton attendanceShortKeyButton=new JButton(); //创建进入“考勤管理”的快捷按钮
         attendanceShortKeyButton.addActionListener(new ActionListener()
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[考勤管理]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 rightPanel.add(new AttendancePanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
@@ -183,11 +204,12 @@ public class MainFrame extends JFrame
         attendanceShortKeyButton.setText("考勤管理");
         buttonPanel.add(attendanceShortKeyButton);
 
-        final JButton rewardPunishmentShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        final JButton rewardPunishmentShortKeyButton=new JButton(); //创建进入“奖惩管理”的快捷按钮
         rewardPunishmentShortKeyButton.addActionListener(new ActionListener()
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[奖惩管理]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 rightPanel.add(new RewardPunishmentPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
@@ -196,11 +218,12 @@ public class MainFrame extends JFrame
         rewardPunishmentShortKeyButton.setText("奖惩管理");
         buttonPanel.add(rewardPunishmentShortKeyButton);
 
-        final JButton statsReportShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        final JButton statsReportShortKeyButton=new JButton(); //创建进入“统计报表”的快捷按钮
         statsReportShortKeyButton.addActionListener(new ActionListener()
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[统计报表]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 rightPanel.add(new StatsReportPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
@@ -209,11 +232,12 @@ public class MainFrame extends JFrame
         statsReportShortKeyButton.setText("统计报表");
         buttonPanel.add(statsReportShortKeyButton);
 
-        final JButton basicInfoShortKeyButton=new JButton(); //创建进入“档案管理”的快捷按钮
+        final JButton basicInfoShortKeyButton=new JButton(); //创建进入“基本资料”的快捷按钮
         basicInfoShortKeyButton.addActionListener(new ActionListener()
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[基本资料]面板……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 rightPanel.add(new BasicInfoPanel(rightPanel),BorderLayout.CENTER); //将档案管理面板添加到内容面板中
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
@@ -234,6 +258,7 @@ public class MainFrame extends JFrame
         { //为按钮创建事件监听器，用来捕获按钮被点击事件
             public void actionPerformed(ActionEvent actionEvent)
             {
+                System.out.println("正在加载[修改密码]对话窗口……");
                 rightPanel.removeAll(); //移除内容面板所有内容
                 SwingUtilities.updateComponentTreeUI(rightPanel); //刷新内容面板中的内容
                 UpdatePwdDialog dialog=new UpdatePwdDialog(); //创建用来修改密码的对话框
@@ -268,7 +293,7 @@ public class MainFrame extends JFrame
             {
                 try
                 {
-                    Runtime.getRuntime().exec("cmd start excel");
+                    Runtime.getRuntime().exec("cmd /c start excel");
                 }catch(Exception exception)
                 {
                     System.err.println("打开EXCEL失败！"+exception.getMessage());
@@ -285,7 +310,7 @@ public class MainFrame extends JFrame
             {
                 try
                 {
-                    Runtime.getRuntime().exec("cmd start winword");
+                    Runtime.getRuntime().exec("cmd /c start winword");
                 }catch(Exception exception)
                 {
                     System.err.println("打开WORD失败！"+exception.getMessage());
@@ -308,7 +333,6 @@ public class MainFrame extends JFrame
 
         MainFrame mainFrame=new MainFrame();
         mainFrame.add(topPanel,BorderLayout.NORTH);
-        mainFrame.add(buttonPanel,BorderLayout.SOUTH);
         mainFrame.add(leftPanel,BorderLayout.WEST);
         mainFrame.add(rightPanel,BorderLayout.EAST);
 
@@ -320,7 +344,7 @@ public class MainFrame extends JFrame
         setTitle("主窗体");
         Container c=getContentPane(); //获取主容器
         setLayout(new BorderLayout());
-        setSize(1000,800);
+        setSize(1200,800);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
