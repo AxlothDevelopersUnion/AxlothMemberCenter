@@ -1,5 +1,10 @@
 package org.axloth.frame;
 
+import org.axloth.dao.DAO;
+import org.axloth.dao.DAOFactory;
+import org.axloth.pojo.Member;
+import org.axloth.session.Session;
+
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -12,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 public class BasicInfoPanel extends JPanel
 {
@@ -19,6 +25,43 @@ public class BasicInfoPanel extends JPanel
     private JTable memberTable;
     private JButton newArchiveBtn;
     private JButton modifyArchiveBtn;
+
+    private static DAO dao=DAOFactory.getDAO(); //数据库接口
+
+    public static Object[][] loadAllMember()
+    { //加载所有成员
+        Session.MEMBER_HASH_SET.clear(); //重置全局会话中的成员缓存，防止数据重叠
+        Session.MEMBER_HASH_SET.addAll(dao.getAllMember()); //从数据库中加载所有成员的对象集
+
+        Object[][] data=new Object[Session.MEMBER_HASH_SET.size()][17];
+        Iterator<Member> iterator=Session.MEMBER_HASH_SET.iterator();
+        int i=0;
+        Member m=new Member();
+
+        while(iterator.hasNext())
+        {
+            m=iterator.next();
+            data[i][0]=m.getAxlothUID();
+            data[i][1]=m.getName();
+            data[i][2]=m.getEmail();
+            data[i][3]=m.getTelephone();
+            data[i][4]=m.getAddress();
+            data[i][5]=m.getPostalCode();
+            data[i][6]=m.getGraduateSchool();
+            data[i][7]=m.getGraduateDate();
+            data[i][8]=m.getSpecialty();
+            data[i][9]=m.getComputerSkill();
+            data[i][10]=m.getJoinDate();
+            data[i][11]=m.getPreference();
+            data[i][12]=m.getAdvantage();
+            data[i][13]=m.getDisadvantage();
+            data[i][14]=m.getBirthday();
+            data[i][15]=m.getBlogUrl();
+            data[i][16]=m.getLastLoginDate();
+            ++i;
+        }
+        return data;
+    }
 
     public BasicInfoPanel()
     {
@@ -56,8 +99,8 @@ public class BasicInfoPanel extends JPanel
         treeScrollPane.setPreferredSize(new Dimension(100,0)); //设置左侧首选宽度
 
         //右侧成员数据表
-        String[] columnNames={"axlothUID","电子邮件","电话号码","地址","邮政编码","毕业院校","毕业时间","专业","计算机能力","加入Axloth的日期时间","喜好","优势","劣势","博客链接","上次登入日期时间"};
-        Object[][] data={{}};
+        String[] columnNames={"axlothUID","姓名","电子邮件","电话号码","地址","邮政编码","毕业院校","毕业时间","专业","计算机能力","加入Axloth的日期时间","喜好","优势","劣势","生日","博客链接","上次登入日期时间"};
+        Object[][] data=loadAllMember();
 
         DefaultTableModel tableModel=new DefaultTableModel(data,columnNames)
         {
@@ -72,7 +115,10 @@ public class BasicInfoPanel extends JPanel
         memberTable.getTableHeader().setFont(new Font("黑体",Font.PLAIN,14));
         memberTable.setRowHeight(25);
         memberTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        memberTable.getColumnModel().getColumn(9).setPreferredWidth(150); //“加入Axloth的日期时间”的列宽
+        memberTable.getColumnModel().getColumn(2).setPreferredWidth(110); //“电子邮件”的列宽
+        memberTable.getColumnModel().getColumn(3).setPreferredWidth(110); //“电话号码”的列宽
+        memberTable.getColumnModel().getColumn(6).setPreferredWidth(110); //“毕业院校”的列宽
+        memberTable.getColumnModel().getColumn(10).setPreferredWidth(150); //“加入Axloth的日期时间”的列宽
         memberTable.getColumnModel().getColumn(14).setPreferredWidth(150); //“上次登入日期时间”的列宽
 
         JScrollPane tableScrollPane=new JScrollPane(memberTable);
